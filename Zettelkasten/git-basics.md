@@ -31,35 +31,30 @@ One of the interesting flags is `--oneline` it will show a short summary of comm
 
 ### Filtering Log Results
 
-To view last `n` commits just add `n` argument
+- To view last `n` commits just add `n` argument `git log --oneline 3`.
+  This will show the last 3 commits
 
-```sh
-git log --oneline 3
-```
+- To filter by author name use `--author="authorName"` flag
 
-This will show the last 3 commits
+- To filter by date use `--after="2020-05-17`, `--before="one week ago`, `--before="yesterday"`.
+  It is possible to use relative dates with this flag.
 
-To filter by author name use `--author="authorName"` flag
+- Another **interesting** flag is `--grep` which allows to filter based on
+  a commit message.
 
-To filter by date use `--after="2020-05-17`, `--before="one week ago`, `--before="yesterday"`.
-It is possible to use relative dates with this flag.
+  ```sh
+  git log --oneline --grep="GUI"
+  ```
 
-Another **interesting** flag is `--grep` which allows to filter based on
-a commit message.
+  Remember that this command is case sensitive.
 
-```sh
-git log --oneline --grep="GUI"
-```
+- To search the contents use `S"hello()"` command.
 
-Remember that this command is case sensitive.
+  ```sh
+  git log --oneline -S"hello()" --patch
+  ```
 
-To search the contents use `S"hello()"` command.
-
-```sh
-git log --oneline -S"hello()" --patch
-```
-
-`--patch` will show what changes were made in the commit.
+  `--patch` will show what changes were made in the commit.
 
 ## Viewing commits
 
@@ -85,10 +80,10 @@ git show HEAD^^    # Same as HEAD~2
 
 Show command support a number of flags
 
-- --name-only - Show the changed files without content
-- --stats - Show statistics of changes
-- HEAD~n:path/to/file.txt - Show specific file from a commit
-- --pretty=format: HEAD~n
+- `--name-only` - Show the changed files without content
+- `--stats` - Show statistics of changes
+- `HEAD~n:path/to/file.txt` - Show specific file from a commit
+- `--pretty=format: HEAD~n` - Format commit
 
 `show` command only displays only differences.
 To view all the files in the commit use `tree-ls`.
