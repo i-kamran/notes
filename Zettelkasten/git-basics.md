@@ -56,6 +56,17 @@ One of the interesting flags is `--oneline` it will show a short summary of comm
 
   `--patch` will show what changes were made in the commit.
 
+### Analyzing Commits
+
+- To find contributors use `shortlog` command
+- To view log across branches use the following command
+
+  > ```sh
+  > git log master..bugfix-signup-form
+  > ```
+
+  This command will show commits that are present in bugfix but not in master branch.
+
 ## Viewing commits
 
 To view a commit use `show` command with commit id or
@@ -96,5 +107,32 @@ git ls-tree HEAD~1          # List contents of previous commit
 # Show specific directory
 git ls-tree HEAD:path/to/dir
 ```
+
+## Branching
+
+To create a branch use `branch` command.
+Branch supports a number of flags
+
+- `-m` to move a branch with reflogs
+- `-c` to copy a branch with reflogs
+- `-a` to list all branches (local and remote)
+- `-d` delete fully merged branch
+
+To change branches use `switch`
+
+```sh
+git switch bugfix-signup-form
+```
+
+## Stashing
+
+Before switching to a different branch, ensure all changes are either committed
+or stashed. To stash use the following command
+
+```sh
+git stash push -a -m "New features"
+```
+
+`-a` or `--all` options are used to stash untracked files
 
 ## References
