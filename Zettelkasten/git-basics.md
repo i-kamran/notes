@@ -124,6 +124,117 @@ To change branches use `switch`
 git switch bugfix-signup-form
 ```
 
+To create and switch to a branch use `-C` option with `swith` command.
+
+## Merging
+
+To merge branches, use the `merge` command.
+`merge` supports a number of useful flags:
+
+- `--no-ff` to disable fast-forward merging, creating a merge commit even when
+  the merge could be fast-forwarded.
+- `--squash` to combine all changes from the branch being merged into a single commit.
+- `--abort` to cancel an in-progress merge, reverting to the pre-merge state.
+- `--no-commit` to prevent an automatic commit after a successful merge, allowing
+  you to review changes before committing.
+
+To perform a merge, specify the branch you want to merge into the current branch:
+
+```sh
+git merge feature/login
+```
+
+### Undoing Changes
+
+To undo a commit or merge commit, you can use either the `reset` or `revert` command:
+
+- **`reset`**: Moves the branch pointer back to a specific commit, removing all
+  commits after that point from history. There are three options for `reset`:
+
+  - `--soft` keeps changes in the staging area.
+  - `--mixed` (default) keeps changes in the working directory but removes them
+    from staging.
+  - `--hard` removes changes entirely (use with caution as this cannot be undone).
+
+  ```sh
+  # Undo the last commit but keep changes staged
+  git reset --soft HEAD~1
+  ```
+
+- **`revert`**: Creates a new commit that undoes the changes introduced
+  by a previous commit, preserving history. This is safer for shared branches
+  since it does not rewrite history.
+  To revert a merge commit, you need to use the `-m` flag to specify the parent
+  of the commit you want to keep. The `-m` option accepts either `1` or `2`,
+  depending on which parent branch you want to preserve:
+
+  - `1`: Keeps the first parent (usually the branch you were on when the merge occurred).
+  - `2`: Keeps the second parent (the branch that was merged in).
+
+  ```sh
+  # Revert a specific commit by hash
+  git revert <commit-hash>
+
+  # Revert merge commit
+  git revert -m 1 HEAD # or use <merge-commit-hash>
+  ```
+
+### Squash Merging
+
+Squash merging combines all commits from a feature branch into a single commit
+when merging into the target branch. This creates a cleaner, more manageable history.
+
+```sh
+# Using merge --squash
+git merge --squash feature-branch
+git commit -m "Squashed feature branch commits"
+```
+
+### Rebasing
+
+Rebasing is an alternative to merging that rewrites commit history by moving or
+combining a sequence of commits to a new base commit. This creates a linear
+project history.
+
+```sh
+# While on feature branch
+git rebase main
+
+# Or specify the branch explicitly
+git rebase main feature-branch
+# Rebase last 3 commits interactively
+git rebase -i HEAD~3
+```
+
+Common interactive rebase commands:
+
+- pick: Keep the commit as is
+- reword: Change the commit message
+- edit: Stop to amend the commit
+- squash: Combine with previous commit
+- fixup: Like squash, but discard the commit message
+- drop: Remove the commit
+
+### Cherry-picking
+
+Cherry-pick is similar to rebase but works with individual commits
+
+```sh
+# Apply a specific commit to current branch
+git cherry-pick <commit-hash>
+
+# Cherry-pick without committing
+git cherry-pick -n <commit-hash>
+```
+
+### Bringing Files From Another Branch
+
+Use `git restore` with `--source=` flag
+
+```sh
+git restore with --source=feature-branch -- file.txt
+```
+
 ## Stashing
 
 Before switching to a different branch, ensure all changes are either committed
