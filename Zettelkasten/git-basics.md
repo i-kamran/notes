@@ -12,14 +12,24 @@ summary: Notes on git basics
 
 <!-- toc -->
 
-- [Basic Log Commands](#basic-log-commands)
+- [Basic Logging](#basic-logging)
   - [Filtering Log Results](#filtering-log-results)
+  - [Analyzing Commits](#analyzing-commits)
 - [Viewing commits](#viewing-commits)
+- [Branching](#branching)
+- [Merging](#merging)
+  - [Undoing Changes](#undoing-changes)
+  - [Squash Merging](#squash-merging)
+  - [Rebasing](#rebasing)
+  - [Cherry-picking](#cherry-picking)
+  - [Bringing Files From Another Branch](#bringing-files-from-another-branch)
+- [Stashing](#stashing)
+- [Fetching](#fetching)
 - [References](#references)
 
 <!-- tocstop -->
 
-## Basic Log Commands
+## Basic Logging
 
 To view commit history use git log command
 
@@ -117,6 +127,8 @@ Branch supports a number of flags
 - `-c` to copy a branch with reflogs
 - `-a` to list all branches (local and remote)
 - `-d` delete fully merged branch
+- `-v` verbose
+- `-vv` to show remote branch tracking info
 
 To change branches use `switch`
 
@@ -246,4 +258,103 @@ git stash push -a -m "New features"
 
 `-a` or `--all` options are used to stash untracked files
 
+## Fetching
+
+Fetch retrieves the latest changes from a remote repository
+
+```sh
+# Fetch from default remote (origin)
+git fetch
+
+# Fetch from a specific remote
+git fetch origin
+
+# Fetch from all remotes
+git fetch --all
+
+# Fetch a specific branch
+git fetch origin branch-name
+
+# Fetch all branches
+git fetch origin '+refs/heads/*:refs/heads/*'
+
+# Fetch tags
+git fetch --tags
+```
+
+- Fetching is a safe operation as it doesn't modify your local branches
+- Use --depth for partial clones to reduce network transfer
+
+```sh
+# Shallow fetch with limited history
+git fetch --depth 1 origin main
+```
+
+## Pulling
+
+Git command used to update the local version of a repository from a remote. [FreeCodeCamp](https://www.freecodecamp.org/news/git-pull-explained/)
+Comparing Fetch vs Pull:
+
+- git fetch: Downloads changes without merging
+- git pull: Downloads and immediately merges changes
+
+```sh
+git pull # 3 way merge by default
+git pull -rebase
+```
+
+### Rebasing Strategy
+
+- Replays local commits on top of remote branch
+- Creates linear history
+- Cleaner, more straightforward commit history
+
+```sh
+# Rebase local changes on top of remote branch
+git pull --rebase
+
+# Interactive rebase during pull
+git pull -r --interactive
+# Pull and fetch all remotes
+git pull --all
+
+# Pull without committing merged changes
+git pull --no-commit
+
+# Reject merge if local changes would be overwritten
+git pull --no-ff
+
+# Shallow pull with limited history
+git pull --depth 1
+```
+
+## Pushing
+
+### Pushing tags
+
+Create a tag with
+
+```sh
+git tag -a v1.0 -m "Release version 1.0"`
+```
+
+```sh
+git push origin v1.0
+
+git push origin --delete v1.0 # Deleting a tag
+
+```
+
 ## References
+
+<!-- TODO: add notes on the following merge strategies -->
+
+<!---->
+<!-- Git offers several merge strategies for different scenarios: -->
+<!---->
+<!-- recursive (default): Used for regular merges between branches -->
+<!-- ours: Automatically resolves conflicts by keeping the current branch version -->
+<!-- theirs: Resolves conflicts by keeping the merged branch version -->
+<!-- octopus: Allows merging more than two branches simultaneously -->
+
+<!-- git remote prune origin -->
