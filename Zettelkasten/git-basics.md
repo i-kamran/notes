@@ -330,20 +330,56 @@ git pull --depth 1
 
 ## Pushing
 
+Pushing is how you transfer commits from your local repository to a remote repository.
+
+```sh
+# Push options
+git push --all                  # All branches
+git push --tags                 # Include tags
+git push -u origin branch       # Set upstream
+git push --force-with-lease     # Safe force push
+git push origin --delete branch # Delete remote branch
+```
+
 ### Pushing tags
 
-Create a tag with
-
 ```sh
-git tag -a v1.0 -m "Release version 1.0"`
-```
-
-```sh
+# Create and push tags
+git tag -a v1.0 -m "Release version 1.0"
 git push origin v1.0
+git push --tags
 
-git push origin --delete v1.0 # Deleting a tag
-
+# Delete tags
+git tag -d v1.0                  # Local
+git push origin --delete v1.0    # Remote
 ```
+
+Best Practices
+
+Avoid force pushing to shared branches
+Use --force-with-lease instead of --force
+Verify remote URLs and branch status
+Pull before pushing to shared branches
+
+### Troubleshooting
+
+```sh
+# Check remote URLs
+git remote -v
+
+# View branch status
+git status
+git branch -vv
+
+# Fix rejected pushes
+git pull --rebase
+git push
+
+# Update remote tracking
+git remote update
+```
+
+## Rewriting History
 
 ## References
 
