@@ -381,6 +381,25 @@ git remote update
 
 ## Rewriting History
 
+Rewriting history in Git is essential for maintaining a clean, understandable
+project history. It is often needed to modify commit history to fix mistakes,
+combine related changes, or ensure the commit log tells a clear story
+of project development.
+
+### Undoing Commits
+
+```sh
+# Modify last commit
+git commit --amend                  # Change message or add files
+git commit --amend --no-edit       # Keep message, add files
+git commit --amend --reset-author  # Update author
+
+# Change author for multiple commits
+git rebase -i HEAD~n
+git commit --amend --author="Name <email>" --no-edit
+git rebase --continue
+```
+
 ## References
 
 <!-- TODO: add notes on the following merge strategies -->
