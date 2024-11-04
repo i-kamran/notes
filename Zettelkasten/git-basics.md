@@ -156,6 +156,67 @@ To perform a merge, specify the branch you want to merge into the current branch
 git merge feature/login
 ```
 
+### Merge Strategies
+
+Git offers several merge strategies for handling different scenarios:
+
+- `recursive` (default) Strategy
+
+  Used for typical merges between two branches. It handles conflicts by
+  merging changes from both branches and attempting to resolve them automatically.
+
+  ```sh
+  git checkout main
+  git merge feature/login   # Uses the recursive strategy by default
+  ```
+
+- `ours` Strategy
+
+  Resolves conflicts by keeping the changes from the current branch and
+  discarding those from the merged branch.
+
+  ```sh
+  git checkout main
+  git merge feature/login -s ours
+  ```
+
+  **Use Case**: Useful when you want to mark a branch as merged but prefer
+  to keep the current branch's content.
+
+- `theirs` Strategy
+
+  Prioritizes changes from the branch being merged and discards changes from the
+  current branch.
+
+  ```sh
+  # Start a merge with the default strategy
+  git checkout main
+  git merge feature/login
+
+  # Manually resolve conflicts by choosing "theirs" version
+  git checkout --theirs .
+
+  # Complete the merge
+  git add .
+  git commit
+  ```
+
+  **Note**: `theirs` is not a built-in strategy like `ours` and must be used
+  during manual conflict resolution.
+
+- `octopus` Strategy
+
+  Used for merging more than two branches at once, primarily when there are no
+  conflicts between them.
+
+  ```sh
+  git checkout main
+  git merge feature/login feature/dashboard feature/settings -s octopus
+  ```
+
+  **Use Case**: Ideal for batch merging multiple feature branches in projects
+  without conflicts.
+
 ### Undoing Changes
 
 To undo a commit or merge commit, you can use either the `reset` or `revert` command:
@@ -388,13 +449,32 @@ of project development.
 
 ### Undoing Commits
 
+To undo local changes (not pushed to remote repository) use `reset` command.
+There are 3 options to control the reset
+
+- `--soft` removes the commit but keeps the changes staged and in the working directory.
+- `--mixed` removes the commit and the staged changes. Mixed is a default option.
+- `--hard` removes all changes
+
+```sh
+git reset --soft HEAD~1
+```
+
+Use `revert` to undo changes in remote repositories.
+`--no-commit` option allows to revert changes across a number of commits, without
+creating commits for every reversed change.
+
+```sh
+git revert --no-commit HEAD~3..HEAD   # Will revert the last 3 commits or use HEAD~3..
+```
+
 ```sh
 # Modify last commit
-git commit --amend                  # Change message or add files
+git commit --amend                 # Change message or add files
 git commit --amend --no-edit       # Keep message, add files
 git commit --amend --reset-author  # Update author
 
-# Change author for multiple commits
+# Change multiple commits
 git rebase -i HEAD~n
 git commit --amend --author="Name <email>" --no-edit
 git rebase --continue
@@ -403,13 +483,5 @@ git rebase --continue
 ## References
 
 <!-- TODO: add notes on the following merge strategies -->
-
-<!---->
-<!-- Git offers several merge strategies for different scenarios: -->
-<!---->
-<!-- recursive (default): Used for regular merges between branches -->
-<!-- ours: Automatically resolves conflicts by keeping the current branch version -->
-<!-- theirs: Resolves conflicts by keeping the merged branch version -->
-<!-- octopus: Allows merging more than two branches simultaneously -->
 
 <!-- git remote prune origin -->
